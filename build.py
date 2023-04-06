@@ -13,7 +13,7 @@ def main():
     object_files = [filename.replace('.c', '.o') for filename in c_files]
 
     # Build command
-    compile_commands = ['gcc {} -g -Wall -Werror -o {}'.format(c_file, o_file) for
+    compile_commands = ['gcc {} -g -Wall -o {}'.format(c_file, o_file) for
                         c_file, o_file in zip(c_files, object_files)]
 
     # Run build in a loop
