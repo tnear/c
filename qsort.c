@@ -35,5 +35,6 @@ void compareInt()
 int main()
 {
     compareInt();
+    printf("Tests passed!\n");
     return 0;
 }
