@@ -6,14 +6,14 @@ regcomp, regexec, regerror, regfree - POSIX regex functions
 Syntax:
 #include <regex.h>
 
-int regcomp(regex_t *restrict preg, const char *restrict regex,
+int regcomp(regex_t *restrict regex, const char *restrict regex,
             int cflags);
-int regexec(const regex_t *restrict preg, const char *restrict string,
+int regexec(const regex_t *restrict regex, const char *restrict string,
             size_t nmatch, regmatch_t pmatch[restrict], int eflags);
 
-size_t regerror(int errcode, const regex_t *restrict preg,
+size_t regerror(int errcode, const regex_t *restrict regex,
             char *restrict errbuf, size_t errbuf_size);
-void regfree(regex_t *preg);
+void regfree(regex_t *regex);
 */
 
 #include <assert.h>
@@ -68,7 +68,7 @@ void capture()
     // The second and third strings are the capture groups.
     char *expStr[] = {"abc123def", "123", "def"};
 
-    for (size_t i = 0; i < maxGroups; ++i) 
+    for (size_t i = 0; i < maxGroups; ++i)
     {
         char sourceCopy[strlen(source) + 1];
         strcpy(sourceCopy, source);
@@ -103,7 +103,7 @@ char *substring(char *string, int position, int length)
     for (c = 0; c < length; c++)
     {
         *(p+c) = *(string+position-1);
-        string++;  
+        string++;
     }
 
     *(p+c) = 0; // Null byte at end
@@ -111,10 +111,52 @@ char *substring(char *string, int position, int length)
     return p;
 }
 
+void backreference()
+{
+    regex_t regex;
+    // Pattern to check duplicated words using backreference (\1)
+    // (\w+) \1
+    char pattern[] = "(\\w+) \\1";
+    int ret = regcomp(&regex, pattern, REG_EXTENDED);
+    assert(ret == REG_NOERROR);
+
+    // Duplicate word hello
+    ret = regexec(&regex, "hello hello", 0, NULL, 0);
+    assert(ret == REG_NOERROR);
+
+    // Another duplicate ("a")
+    ret = regexec(&regex, "test a a test", 0, NULL, 0);
+    assert(ret == REG_NOERROR);
+
+    // No consecutive duplicates
+    ret = regexec(&regex, "hello world hello", 0, NULL, 0);
+    assert(ret == REG_NOMATCH);
+}
+
+// https://www.ibm.com/docs/en/zos/2.3.0?topic=functions-regerror-return-error-message
+void regerrorTest()
+{
+    regex_t regex;
+    // Create an invalid pattern (missing bracket)
+    char pattern[] = "a[missing.bracket";
+
+    int ret = regcomp(&regex, pattern, REG_EXTENDED);
+    assert(ret == REG_EBRACK);
+
+    // regerror returns error message (in buffer variable) for regex
+    char buffer[100];
+    regerror(ret, &regex, buffer, 100);
+
+    // Verify return error text
+    assert(strcmp(buffer, "Unmatched [, [^, [:, [., or [=") == 0);
+}
+
 int main()
 {
     basic();
     capture();
+    backreference();
+    regerrorTest();
 
     printf("Tests passed!\n");
     return 0;
