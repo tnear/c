@@ -1,2 +1,8 @@
+# object files
 *.o
+
+# crash dumps
 *.o.core
+
+# temp vim files
+*.c.swp

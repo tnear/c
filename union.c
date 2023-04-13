@@ -26,7 +26,7 @@ void unionBasic()
     assert(u.a == 1);
     assert(u2.b == 'a');
 
-    // Union size equals largest of (int, char) which is int (4 bytes)
+    // Union size equals largest of {int, char} which is int (4 bytes)
     assert(sizeof(int) == 4);
     assert(sizeof(u) == 4);
 }
