@@ -8,6 +8,7 @@
         "new": "c",
         "ostream": "c",
         "streambuf": "c",
-        "regex.h": "c"
+        "regex.h": "c",
+        "cstring": "c"
     }
 }

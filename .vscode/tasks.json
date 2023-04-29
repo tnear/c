@@ -8,6 +8,7 @@
                 "-fdiagnostics-color=always",
                 "-g",
                 "${file}",
+                "-lcurl", // For cURL usage
                 "-o",
                 "${fileDirname}/${fileBasenameNoExtension}.o"
             ],

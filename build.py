@@ -5,20 +5,37 @@ import subprocess
 # Usage:
 # ./build.py
 
+class Options:
+    def __init__(self, filename, flags):
+        self.filename = filename
+        self.objectName = filename.replace('.c', '.o')
+        self.flags = flags
+
+    def getCommand(self):
+        return f'gcc {self.filename} {self.flags} -o {self.objectName}'
+
 def main():
     # Get every .c file
-    c_files = [filename for filename in os.listdir() if filename.endswith('.c')]
+    cFiles = [filename for filename in os.listdir() if filename.endswith('.c')]
 
-    # Create a .o file for each file
-    object_files = [filename.replace('.c', '.o') for filename in c_files]
-
-    # Build command
-    compile_commands = ['gcc {} -g -Wall -o {}'.format(c_file, o_file) for
-                        c_file, o_file in zip(c_files, object_files)]
+    # Group compile command into a class
+    options = []
+    for cFile in cFiles:
+        flags = getFlags(cFile)
+        option = Options(cFile, flags)
+        options.append(option)
 
     # Run build in a loop
-    for compile_command in compile_commands:
-        subprocess.call(compile_command, shell=True)
+    for option in options:
+        command = option.getCommand()
+        subprocess.call(command, shell=True)
+
+def getFlags(filename):
+    flags = '-g -Wall'
+    if filename == 'curl.c':
+        flags += ' -lcurl'
+
+    return flags
 
 if __name__ == '__main__':
     main()

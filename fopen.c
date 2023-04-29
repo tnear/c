@@ -25,17 +25,17 @@ void fopenBasic()
 
     // Read data back
     fp = fopen(filename, "r");
+    assert(fileno(fp) > 0);
     char buf[255] = {};
-    int ret = strcmp(buf, data);
-    assert(ret != 0);
     fread(buf, 255, 1, fp);
 
     // Verify file data is same
-    ret = strcmp(buf, data);
-    assert(ret == 0);
+    assert(strcmp(buf, data) == 0);
 
     // Delete file when done
     remove(filename);
+
+    fclose(fp);
 }
 
 int main()
