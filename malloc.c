@@ -49,6 +49,6 @@ int main()
 {
     mallocBasic();
     mallocFail();
-    printf("Tests passed!\n");
+    printf(__FILE__ " tests passed!\n");
     return 0;
 }
