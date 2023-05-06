@@ -3,6 +3,9 @@ CURL
 
 curl - transfer a URL
 
+Build:
+gcc curl.c -lcurl -o curl.o
+
 Include:
 #include <curl/curl.h>
 */

@@ -9,6 +9,7 @@
         "ostream": "c",
         "streambuf": "c",
         "regex.h": "c",
-        "cstring": "c"
+        "cstring": "c",
+        "stdio.h": "c"
     }
 }
