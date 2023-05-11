@@ -73,7 +73,7 @@ void question()
 // Example for [...]
 void bracket()
 {
-        glob_t pglob;
+    glob_t pglob;
 
     // Find all .c file starting with a, b, or c
     int result = glob("[a-c]*.c", GLOB_ERR, NULL, &pglob);

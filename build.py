@@ -14,6 +14,14 @@ class Options:
     def getCommand(self):
         return f'gcc {self.filename} {self.flags} -o {self.objectName}'
 
+    def needsCompile(self):
+        if not os.path.exists(self.objectName):
+            return True # object file doesn't exist
+        elif os.path.getmtime(self.filename) > os.path.getmtime(self.objectName):
+            return True # source file is newer than object file
+        else:
+            return False
+
 def main():
     # Get every .c file
     cFiles = [filename for filename in os.listdir() if filename.endswith('.c')]
@@ -27,6 +35,9 @@ def main():
 
     # Run build in a loop
     for option in options:
+        if not option.needsCompile():
+            continue
+
         command = option.getCommand()
         subprocess.call(command, shell=True)
 
