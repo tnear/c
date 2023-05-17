@@ -39,7 +39,8 @@ def main():
             continue
 
         command = option.getCommand()
-        subprocess.call(command, shell=True)
+        print(f'Building {option.filename}...')
+        subprocess.run(command, shell=True)
 
 def getFlags(filename):
     flags = '-g -Wall'

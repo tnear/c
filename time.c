@@ -3,7 +3,7 @@ TIME
 
 time - get time in seconds
 
-time()  returns the time as the number of seconds since the Epoch, 1970-01-01
+time() returns the time as the number of seconds since the Epoch, 1970-01-01
 
 #include <time.h>
 time_t time(time_t *tloc);
