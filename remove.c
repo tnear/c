@@ -1,10 +1,10 @@
 /*
-ACCESS
+REMOVE
 
-access - check user's permissions for a file
+remove - remove a file or directory
 
-#include <unistd.h>
-int access(const char *pathname, int mode);
+#include <stdio.h>
+int remove(const char *pathname);
 */
 
 #include <assert.h>
@@ -15,13 +15,17 @@ int access(const char *pathname, int mode);
 static bool isFile(const char *pathname)
 {
     return access(pathname, F_OK) == 0;
-}   
+}
 
-void fileExists()
+void testRemoveFile()
 {
-    char filename[] = "access_data.txt";
+    char filename[] = "remove_example.txt";
     // Verify file does not exist
     assert(!isFile(filename));
+
+    // remove on non-existent file returns -1
+    int ret = remove(filename);
+    assert(ret == -1);
 
     // Create a file for writing
     FILE *fp = fopen(filename, "w");
@@ -37,7 +41,7 @@ void fileExists()
 
 int main()
 {
-    fileExists();
+    testRemoveFile();
 
     printf(__FILE__ " tests passed!\n");
     return 0;
