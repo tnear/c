@@ -1,12 +1,14 @@
 /*
 BIT FIELD
 
-Define the number of bits for each field of a struct.
+A bit field defines the number of bits for each field of a struct.
 */
 
 #include <assert.h>
 #include <stdio.h>
 
+// 'packed' prevents the compiler from adding padding.
+// each of the fields below is exactly one bit.
 struct BitField
 {
     unsigned int field1 : 1;
